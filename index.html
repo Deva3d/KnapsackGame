@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knapsack Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-light: #60a5fa;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --transition: all 0.2s ease;
+            --border-radius: 16px;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #e0f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1100px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .game-area {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .level-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .level-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            background: #f1f5f9;
+            border-radius: 12px;
+            min-width: 100px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        .bag-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .bag {
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(to bottom, #8B4513, #A0522D);
+            border-radius: 20px 20px 100px 100px;
+            position: relative;
+            box-shadow: 
+                inset 0 -20px 30px rgba(0, 0, 0, 0.4), 
+                0 10px 20px rgba(0, 0, 0, 0.2);
+            border: 10px solid #5D4037;
+            overflow: hidden;
+        }
+
+        .bag-top {
+            position: absolute;
+            top: -5px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(to bottom, #A0522D, #8B4513);
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .bag-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(to top, #CD853F, #DEB887);
+            transition: height 0.5s ease;
+            z-index: 1;
+        }
+
+        .bag-items {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 40px);
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: flex-end;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .weight-indicator {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+        }
+
+        .items-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            min-height: 180px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .item {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            cursor: grab;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .item:hover::before {
+            opacity: 1;
+        }
+
+        .item-value {
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .item-weight {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            margin-top: 0.2rem;
+        }
+
+        .item.in-bag {
+            transform: scale(0.9);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .item.in-bag::after {
+            content: '✕';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .item.in-bag:hover::after {
+            opacity: 1;
+        }
+
+        .item.removing {
+            animation: removeItem 0.4s forwards;
+        }
+
+        @keyframes removeItem {
+            0% { transform: scale(0.9); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .item.hidden {
+            display: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .instructions {
+            line-height: 1.6;
+        }
+
+        .instructions ol {
+            margin-left: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .score-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal h2 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .modal p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background: var(--primary);
+            top: -20px;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .trophy {
+            font-size: 4rem;
+            color: var(--warning);
+            margin-bottom: 1rem;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        .item-1 { background: linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%); }
+        .item-2 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .item-3 { background: linear-gradient(135deg, #ffd89b 0%, #ff9c6b 100%); }
+        .item-4 { background: linear-gradient(135deg, #a8e6cf 0%, #5ee7df 100%); }
+        .item-5 { background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
+        .item-6 { background: linear-gradient(135deg, #a6c0fe 0%, #f68084 100%); }
+
+        .drag-over {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .trash-zone {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 70px;
+            height: 70px;
+            background: var(--danger);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            transition: var(--transition);
+            opacity: 0.8;
+        }
+
+        .trash-zone.drag-over {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .timer {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-instruction {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .game-area, .sidebar {
+                padding: 1.5rem;
+            }
+            
+            .bag {
+                width: 260px;
+                height: 350px;
+            }
+            
+            .item {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .trash-zone {
+                bottom: 1rem;
+                right: 1rem;
+                width: 60px;
+                height: 60px;
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Knapsack Challenge</h1>
+            <p class="subtitle">Fill your bag with valuable items without exceeding the weight limit. Maximize your profit to advance to higher levels!</p>
+        </header>
+
+        <div class="game-container">
+            <div class="game-area">
+                <div class="level-info">
+                    <div class="level-title">
+                        <span>Beginner's Luck</span>
+                        <div class="level-badge">Level 1</div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value" id="current-value">0</div>
+                            <div class="stat-label">Current Value</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="current-weight">0</div>
+                            <div class="stat-label">Current Weight</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="max-weight">10</div>
+                            <div class="stat-label">Max Weight</div>
+                        </div>
+                        <div class="stat">
+                            <div class="timer">
+                                <i class="fas fa-clock"></i>
+                                <span id="time">60</span>s
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bag-container">
+                    <div class="bag" id="bag">
+                        <div class="bag-top"></div>
+                        <div class="bag-content" id="bag-content"></div>
+                        <div class="bag-items" id="bag-items"></div>
+                    </div>
+                    <div class="weight-indicator">
+                        <i class="fas fa-weight-hanging"></i>
+                        Weight: <span id="weight-indicator">0</span>/<span id="max-weight-indicator">10</span>
+                    </div>
+                    <div class="remove-instruction">
+                        <i class="fas fa-info-circle"></i> Click items in bag to remove them
+                    </div>
+                </div>
+
+                <div class="items-container" id="items-container">
+                    <!-- Items will be generated here -->
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="check-btn">
+                        <i class="fas fa-check-circle"></i> Check Solution
+                    </button>
+                    <button class="btn btn-success" id="hint-btn">
+                        <i class="fas fa-lightbulb"></i> Get Hint
+                    </button>
+                    <button class="btn btn-warning" id="reset-btn">
+                        <i class="fas fa-redo"></i> Reset Level
+                    </button>
+                    <button class="btn btn-danger" id="solution-btn">
+                        <i class="fas fa-eye"></i> Show Solution
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <h3><i class="fas fa-trophy"></i> Score Board</h3>
+                    <div class="score-board">
+                        <div>
+                            <div class="score-value" id="score">0</div>
+                            <div class="score-label">Total Score</div>
+                        </div>
+                        <div>
+                            <div class="score-value" id="level">1</div>
+                            <div class="score-label">Current Level</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Level Progress</span>
+                            <span id="progress-percent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="level-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-history"></i> Level History</h3>
+                    <div id="history-list">
+                        <div class="history-item">
+                            <span>Start your journey!</span>
+                            <span>+0 points</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-info-circle"></i> How to Play</h3>
+                    <div class="instructions">
+                        <ol>
+                            <li>Drag items into the bag to maximize value</li>
+                            <li>Don't exceed the weight limit shown</li>
+                            <li><strong>Items disappear from the list when in the bag</strong></li>
+                            <li>Click items in the bag to remove them</li>
+                            <li>Or drag items from the bag to the trash can</li>
+                            <li>Check your solution when ready</li>
+                            <li>Complete levels to earn points</li>
+                            <li>Use hints if you get stuck</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trash Zone for removing items -->
+    <div class="trash-zone" id="trash-zone">
+        <i class="fas fa-trash"></i>
+    </div>
+
+    <!-- Level Complete Modal -->
+    <div class="modal" id="level-complete-modal">
+        <div class="modal-content">
+            <div class="trophy">🏆</div>
+            <h2>Level Complete!</h2>
+            <p>You've successfully solved this knapsack problem and earned <span id="earned-points">0</span> points!</p>
+            <p>Your solution achieved the maximum possible value.</p>
+            <button class="btn btn-primary" id="next-level-btn">
+                <i class="fas fa-arrow-right"></i> Next Level
+            </button>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="modal" id="game-over-modal">
+        <div class="modal-content">
+            <h2>Time's Up!</h2>
+            <p>You ran out of time on this level. Don't worry, you can try again!</p>
+            <button class="btn btn-primary" id="retry-btn">
+                <i class="fas fa-redo"></i> Try Again
+            </button>
+        </div>
+    </div>
+
+    <!-- Solution Modal -->
+    <div class="modal" id="solution-modal">
+        <div class="modal-content">
+            <h2>Optimal Solution</h2>
+            <p>For maximum value, you should have selected these items:</p>
+            <div id="solution-items"></div>
+            <p>This gives a total value of <span id="solution-value">0</span> with weight <span id="solution-weight">0</span>.</p>
+            <button class="btn btn-primary" id="close-solution-btn">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Celebration Confetti -->
+    <div class="celebration" id="celebration"></div>
+
+    <script>
+        // Game state
+        const gameState = {
+            level: 1,
+            score: 0,
+            currentValue: 0,
+            currentWeight: 0,
+            maxWeight: 10,
+            items: [],
+            selectedItems: [],
+            timeLeft: 60,
+            timer: null,
+            isPaused: false
+        };
+
+        // DOM elements
+        const elements = {
+            bag: document.getElementById('bag'),
+            bagItems: document.getElementById('bag-items'),
+            bagContent: document.getElementById('bag-content'),
+            itemsContainer: document.getElementById('items-container'),
+            currentValue: document.getElementById('current-value'),
+            currentWeight: document.getElementById('current-weight'),
+            maxWeight: document.getElementById('max-weight'),
+            weightIndicator: document.getElementById('weight-indicator'),
+            maxWeightIndicator: document.getElementById('max-weight-indicator'),
+            checkBtn: document.getElementById('check-btn'),
+            hintBtn: document.getElementById('hint-btn'),
+            resetBtn: document.getElementById('reset-btn'),
+            solutionBtn: document.getElementById('solution-btn'),
+            score: document.getElementById('score'),
+            level: document.getElementById('level'),
+            levelProgress: document.getElementById('level-progress'),
+            progressPercent: document.getElementById('progress-percent'),
+            historyList: document.getElementById('history-list'),
+            levelCompleteModal: document.getElementById('level-complete-modal'),
+            gameOverModal: document.getElementById('game-over-modal'),
+            solutionModal: document.getElementById('solution-modal'),
+            nextLevelBtn: document.getElementById('next-level-btn'),
+            retryBtn: document.getElementById('retry-btn'),
+            closeSolutionBtn: document.getElementById('close-solution-btn'),
+            earnedPoints: document.getElementById('earned-points'),
+            solutionItems: document.getElementById('solution-items'),
+            solutionValue: document.getElementById('solution-value'),
+            solutionWeight: document.getElementById('solution-weight'),
+            time: document.getElementById('time'),
+            celebration: document.getElementById('celebration'),
+            trashZone: document.getElementById('trash-zone')
+        };
+
+        // Initialize the game
+        function initGame() {
+            generateLevel();
+            setupEventListeners();
+            updateUI();
+            startTimer();
+        }
+
+        // Generate a random level
+        function generateLevel() {
+            gameState.items = [];
+            gameState.selectedItems = [];
+            gameState.currentValue = 0;
+            gameState.currentWeight = 0;
+            
+            // Adjust difficulty based on level
+            const itemCount = Math.min(6 + Math.floor(gameState.level / 2), 12);
+            gameState.maxWeight = 10 + Math.floor(gameState.level * 1.5);
+            gameState.timeLeft = 60 + Math.floor(gameState.level * 5);
+            
+            // Generate random items
+            for (let i = 0; i < itemCount; i++) {
+                const value = Math.floor(Math.random() * 20) + 5;
+                const weight = Math.floor(Math.random() * 8) + 1;
+                gameState.items.push({
+                    id: i,
+                    value: value,
+                    weight: weight,
+                    element: null,
+                    inBag: false
+                });
+            }
+            
+            // Update UI
+            elements.maxWeight.textContent = gameState.maxWeight;
+            elements.maxWeightIndicator.textContent = gameState.maxWeight;
+            elements.time.textContent = gameState.timeLeft;
+            elements.level.textContent = gameState.level;
+            
+            renderItems();
+            updateBagFill();
+        }
+
+        // Render items in the items container
+        function renderItems() {
+            elements.itemsContainer.innerHTML = '';
+            
+            gameState.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = `item item-${(item.id % 6) + 1}`;
+                itemElement.setAttribute('draggable', 'true');
+                itemElement.setAttribute('data-id', item.id);
+                itemElement.innerHTML = `
+                    <div class="item-value">$${item.value}</div>
+                    <div class="item-weight">${item.weight}kg</div>
+                `;
+                
+                // Add drag event listeners
+                itemElement.addEventListener('dragstart', handleDragStart);
+                itemElement.addEventListener('dragend', handleDragEnd);
+                
+                elements.itemsContainer.appendChild(itemElement);
+                item.element = itemElement;
+                item.inBag = false;
+                
+                // Hide item if it's already in the bag
+                if (item.inBag) {
+                    itemElement.classList.add('hidden');
+                }
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Bag events
+            elements.bag.addEventListener('dragover', handleDragOver);
+            elements.bag.addEventListener('dragenter', handleDragEnter);
+            elements.bag.addEventListener('dragleave', handleDragLeave);
+            elements.bag.addEventListener('drop', handleDrop);
+            
+            // Trash zone events
+            elements.trashZone.addEventListener('dragover', handleTrashDragOver);
+            elements.trashZone.addEventListener('dragenter', handleTrashDragEnter);
+            elements.trashZone.addEventListener('dragleave', handleTrashDragLeave);
+            elements.trashZone.addEventListener('drop', handleTrashDrop);
+            
+            // Button events
+            elements.checkBtn.addEventListener('click', checkSolution);
+            elements.hintBtn.addEventListener('click', showHint);
+            elements.resetBtn.addEventListener('click', resetLevel);
+            elements.solutionBtn.addEventListener('click', showSolution);
+            elements.nextLevelBtn.addEventListener('click', nextLevel);
+            elements.retryBtn.addEventListener('click', resetLevel);
+            elements.closeSolutionBtn.addEventListener('click', () => {
+                elements.solutionModal.classList.remove('active');
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        // Drag and drop handlers
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
+            e.dataTransfer.setData('source', 'items-container');
+            setTimeout(() => {
+                e.target.style.opacity = '0.5';
+            }, 0);
+        }
+
+        function handleDragEnd(e) {
+            e.target.style.opacity = '1';
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            elements.bag.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            elements.bag.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            elements.bag.classList.remove('drag-over');
+            
+            const itemId = e.dataTransfer.getData('text/plain');
+            const source = e.dataTransfer.getData('source');
+            const item = gameState.items.find(i => i.id == itemId);
+            
+            if (item) {
+                if (source === 'items-container' && !item.inBag) {
+                    // Adding item to bag
+                    if (gameState.currentWeight + item.weight <= gameState.maxWeight) {
+                        addItemToBag(item);
+                    } else {
+                        // Show warning
+                        elements.bag.classList.add('shake');
+                        setTimeout(() => {
+                            elements.bag.classList.remove('shake');
+                        }, 500);
+                    }
+                }
+            }
+        }
+
+        // Trash zone handlers
+        function handleTrashDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleTrashDragEnter(e) {
+            e.preventDefault();
+            elements.trashZone.classList.add('drag-over');
+        }
+
+        function handleTrashDragLeave(e) {
+            elements.trashZone.classList.remove('drag-over');
+        }
+
+        function handleTrashDrop(e) {
+            e.preventDefault();
+            elements.trashZone.classList.remove('drag-over');
+            
+            const itemId = e.dataTransfer.getData('text/plain');
+            const source = e.dataTransfer.getData('source');
+            const item = gameState.items.find(i => i.id == itemId);
+            
+            if (item && source === 'bag-items' && item.inBag) {
+                removeItemFromBag(item);
+            }
+        }
+
+        // Add item to bag
+        function addItemToBag(item) {
+            gameState.selectedItems.push(item);
+            gameState.currentValue += item.value;
+            gameState.currentWeight += item.weight;
+            item.inBag = true;
+            
+            // Hide the item from the items list
+            item.element.classList.add('hidden');
+            
+            // Create a copy of the item in the bag
+            const itemCopy = item.element.cloneNode(true);
+            itemCopy.classList.add('in-bag');
+            itemCopy.classList.remove('hidden');
+            itemCopy.setAttribute('draggable', 'true');
+            itemCopy.setAttribute('data-id', item.id);
+            
+            // Add click event to remove item
+            itemCopy.addEventListener('click', () => removeItemFromBag(item));
+            
+            // Add drag events for removing from bag
+            itemCopy.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
+                e.dataTransfer.setData('source', 'bag-items');
+                setTimeout(() => {
+                    e.target.style.opacity = '0.5';
+                }, 0);
+            });
+            
+            itemCopy.addEventListener('dragend', (e) => {
+                e.target.style.opacity = '1';
+            });
+            
+            elements.bagItems.appendChild(itemCopy);
+            
+            updateUI();
+            updateBagFill();
+        }
+
+        // Remove item from bag
+        function removeItemFromBag(item) {
+            // Find the item copy in the bag
+            const itemCopy = elements.bagItems.querySelector(`[data-id="${item.id}"]`);
+            
+            if (itemCopy) {
+                // Add removal animation
+                itemCopy.classList.add('removing');
+                
+                // Remove after animation completes
+                setTimeout(() => {
+                    elements.bagItems.removeChild(itemCopy);
+                    
+                    // Update game state
+                    const index = gameState.selectedItems.indexOf(item);
+                    if (index > -1) {
+                        gameState.selectedItems.splice(index, 1);
+                    }
+                    
+                    gameState.currentValue -= item.value;
+                    gameState.currentWeight -= item.weight;
+                    item.inBag = false;
+                    
+                    // Show the item again in the items list
+                    item.element.classList.remove('hidden');
+                    
+                    updateUI();
+                    updateBagFill();
+                }, 400);
+            }
+        }
+
+        // Update UI elements
+        function updateUI() {
+            elements.currentValue.textContent = gameState.currentValue;
+            elements.currentWeight.textContent = gameState.currentWeight;
+            elements.weightIndicator.textContent = gameState.currentWeight;
+            
+            // Update progress bar
+            const progress = (gameState.currentWeight / gameState.maxWeight) * 100;
+            elements.levelProgress.style.width = `${progress}%`;
+            elements.progressPercent.textContent = `${Math.min(Math.round(progress), 100)}%`;
+            
+            // Update score and level
+            elements.score.textContent = gameState.score;
+            elements.level.textContent = gameState.level;
+        }
+
+        // Update bag fill level
+        function updateBagFill() {
+            const fillPercentage = (gameState.currentWeight / gameState.maxWeight) * 80;
+            elements.bagContent.style.height = `${fillPercentage}%`;
+        }
+
+        // Check if the current solution is optimal
+        function checkSolution() {
+            // Calculate the optimal solution for this level
+            const optimalSolution = calculateOptimalSolution();
+            const optimalValue = optimalSolution.reduce((sum, item) => sum + item.value, 0);
+            
+            if (gameState.currentValue >= optimalValue * 0.9) {
+                // Good enough solution
+                completeLevel(optimalValue);
+            } else {
+                // Not optimal
+                alert(`Your solution is not optimal. Try to achieve at least $${Math.floor(optimalValue * 0.9)} in value.`);
+            }
+        }
+
+        // Calculate the optimal solution using dynamic programming
+        function calculateOptimalSolution() {
+            const n = gameState.items.length;
+            const W = gameState.maxWeight;
+            const dp = Array(n + 1).fill().map(() => Array(W + 1).fill(0));
+            
+            // Build the DP table
+            for (let i = 1; i <= n; i++) {
+                for (let w = 1; w <= W; w++) {
+                    if (gameState.items[i-1].weight <= w) {
+                        dp[i][w] = Math.max(
+                            dp[i-1][w],
+                            gameState.items[i-1].value + dp[i-1][w - gameState.items[i-1].weight]
+                        );
+                    } else {
+                        dp[i][w] = dp[i-1][w];
+                    }
+                }
+            }
+            
+            // Backtrack to find the items in the optimal solution
+            const selected = [];
+            let w = W;
+            for (let i = n; i > 0 && w > 0; i--) {
+                if (dp[i][w] !== dp[i-1][w]) {
+                    selected.push(gameState.items[i-1]);
+                    w -= gameState.items[i-1].weight;
+                }
+            }
+            
+            return selected;
+        }
+
+        // Show a hint to the player
+        function showHint() {
+            const optimalSolution = calculateOptimalSolution();
+            const hintItem = optimalSolution.find(item => 
+                !gameState.selectedItems.includes(item) && 
+                gameState.currentWeight + item.weight <= gameState.maxWeight
+            );
+            
+            if (hintItem) {
+                // Highlight the suggested item
+                hintItem.element.classList.add('pulse');
+                setTimeout(() => {
+                    hintItem.element.classList.remove('pulse');
+                }, 2000);
+                
+                alert(`Try adding the item with value $${hintItem.value} and weight ${hintItem.weight}kg`);
+            } else {
+                alert("You're on the right track! Try removing some items to make space for more valuable ones.");
+            }
+        }
+
+        // Show the optimal solution
+        function showSolution() {
+            const optimalSolution = calculateOptimalSolution();
+            const optimalValue = optimalSolution.reduce((sum, item) => sum + item.value, 0);
+            const optimalWeight = optimalSolution.reduce((sum, item) => sum + item.weight, 0);
+            
+            elements.solutionItems.innerHTML = '';
+            optimalSolution.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = `item item-${(item.id % 6) + 1}`;
+                itemElement.innerHTML = `
+                    <div class="item-value">$${item.value}</div>
+                    <div class="item-weight">${item.weight}kg</div>
+                `;
+                elements.solutionItems.appendChild(itemElement);
+            });
+            
+            elements.solutionValue.textContent = optimalValue;
+            elements.solutionWeight.textContent = optimalWeight;
+            elements.solutionModal.classList.add('active');
+        }
+
+        // Reset the current level
+        function resetLevel() {
+            clearInterval(gameState.timer);
+            elements.levelCompleteModal.classList.remove('active');
+            elements.gameOverModal.classList.remove('active');
+            elements.solutionModal.classList.remove('active');
+            
+            // Reset all items
+            gameState.items.forEach(item => {
+                item.inBag = false;
+                if (item.element) {
+                    item.element.classList.remove('hidden');
+                }
+            });
+            
+            // Clear selected items and bag
+            gameState.selectedItems = [];
+            gameState.currentValue = 0;
+            gameState.currentWeight = 0;
+            
+            // Clear bag items
+            elements.bagItems.innerHTML = '';
+            
+            // Restart timer and update UI
+            updateUI();
+            updateBagFill();
+            startTimer();
+        }
+
+        // Complete the current level
+        function completeLevel(optimalValue) {
+            clearInterval(gameState.timer);
+            
+            // Calculate points earned
+            const efficiency = gameState.currentValue / optimalValue;
+            const timeBonus = Math.floor(gameState.timeLeft / 10);
+            const pointsEarned = Math.floor(50 * efficiency) + timeBonus + gameState.level * 5;
+            
+            gameState.score += pointsEarned;
+            elements.earnedPoints.textContent = pointsEarned;
+            
+            // Add to history
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            historyItem.innerHTML = `
+                <span>Level ${gameState.level}</span>
+                <span>+${pointsEarned} points</span>
+            `;
+            elements.historyList.appendChild(historyItem);
+            
+            // Show celebration
+            createConfetti();
+            
+            // Show level complete modal
+            elements.levelCompleteModal.classList.add('active');
+        }
+
+        // Move to the next level
+        function nextLevel() {
+            gameState.level++;
+            elements.levelCompleteModal.classList.remove('active');
+            generateLevel();
+            startTimer();
+        }
+
+        // Start the timer
+        function startTimer() {
+            clearInterval(gameState.timer);
+            gameState.timeLeft = 60 + Math.floor(gameState.level * 5);
+            elements.time.textContent = gameState.timeLeft;
+            
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                elements.time.textContent = gameState.timeLeft;
+                
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timer);
+                    elements.gameOverModal.classList.add('active');
+                }
+            }, 1000);
+        }
+
+        // Handle keyboard shortcuts
+        function handleKeyPress(e) {
+            if (e.key === 'r' || e.key === 'R') {
+                resetLevel();
+            } else if (e.key === 'h' || e.key === 'H') {
+                showHint();
+            } else if (e.key === 'Enter') {
+                checkSolution();
+            } else if (e.key === 'Escape') {
+                // Remove last added item
+                if (gameState.selectedItems.length > 0) {
+                    const lastItem = gameState.selectedItems[gameState.selectedItems.length - 1];
+                    removeItemFromBag(lastItem);
+                }
+            }
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            elements.celebration.innerHTML = '';
+            const colors = ['#3b82f6', '#1d4ed8', '#ec4899', '#10b981', '#f59e0b', '#ef4444'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                confetti.style.opacity = Math.random();
+                elements.celebration.appendChild(confetti);
+            }
+            
+            setTimeout(() => {
+                elements.celebration.innerHTML = '';
+            }, 5000);
+        }
+
+        // Initialize the game when the page loads
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
