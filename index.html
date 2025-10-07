@@ -11,6 +11,11 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         :root {
@@ -40,27 +45,28 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2rem 1rem;
+            padding: 1rem;
             overflow-x: hidden;
             line-height: 1.6;
+            touch-action: manipulation;
         }
 
         .container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1200px;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         header {
             text-align: center;
             color: white;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 2.2rem;
             margin-bottom: 0.5rem;
             font-weight: 800;
             background: linear-gradient(to right, #fff, #e0f2fe);
@@ -70,7 +76,7 @@
         }
 
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1rem;
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
@@ -79,108 +85,117 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 2rem;
-        }
-
-        @media (max-width: 1100px) {
-            .game-container {
-                grid-template-columns: 1fr;
-            }
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
 
         .game-area {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 2rem;
+            padding: 1.5rem;
             box-shadow: var(--shadow-lg);
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1.5rem;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .level-info {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 1.5rem;
+            flex-direction: column;
+            gap: 1rem;
+            padding-bottom: 1rem;
             border-bottom: 1px solid #e2e8f0;
         }
 
         .level-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--primary-dark);
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: space-between;
         }
 
         .level-badge {
             background: var(--primary);
             color: white;
-            padding: 0.4rem 1rem;
+            padding: 0.3rem 0.8rem;
             border-radius: 50px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
         .stats {
-            display: flex;
-            gap: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
         }
 
         .stat {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0.8rem 1.2rem;
+            padding: 0.6rem;
             background: #f1f5f9;
-            border-radius: 12px;
-            min-width: 100px;
+            border-radius: 10px;
+            text-align: center;
         }
 
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--primary);
         }
 
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--gray);
             font-weight: 500;
-            margin-top: 0.3rem;
+            margin-top: 0.2rem;
+        }
+
+        .timer-container {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #f1f5f9;
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--primary);
         }
 
         .bag-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .bag {
-            width: 300px;
-            height: 400px;
+            width: 280px;
+            height: 350px;
             background: linear-gradient(to bottom, #8B4513, #A0522D);
-            border-radius: 20px 20px 100px 100px;
+            border-radius: 18px 18px 90px 90px;
             position: relative;
             box-shadow: 
                 inset 0 -20px 30px rgba(0, 0, 0, 0.4), 
                 0 10px 20px rgba(0, 0, 0, 0.2);
-            border: 10px solid #5D4037;
+            border: 8px solid #5D4037;
             overflow: hidden;
+            touch-action: none;
         }
 
         .bag-top {
             position: absolute;
-            top: -5px;
+            top: -4px;
             left: 0;
             width: 100%;
-            height: 30px;
+            height: 25px;
             background: linear-gradient(to bottom, #A0522D, #8B4513);
             border-radius: 50%;
             z-index: 2;
@@ -200,28 +215,28 @@
 
         .bag-items {
             position: absolute;
-            top: 40px;
+            top: 35px;
             left: 0;
             width: 100%;
-            height: calc(100% - 40px);
-            padding: 10px;
+            height: calc(100% - 35px);
+            padding: 8px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-content: flex-end;
-            gap: 10px;
+            gap: 8px;
             z-index: 3;
         }
 
         .weight-indicator {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--dark);
             display: flex;
             align-items: center;
             gap: 0.5rem;
             background: white;
-            padding: 0.7rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 50px;
             box-shadow: var(--shadow);
         }
@@ -230,29 +245,31 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1.5rem;
-            padding: 1.5rem;
+            gap: 1rem;
+            padding: 1.2rem;
             background: #f8fafc;
             border-radius: 12px;
-            min-height: 180px;
+            min-height: 150px;
             border: 2px dashed #cbd5e1;
         }
 
         .item {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
+            width: 70px;
+            height: 70px;
+            border-radius: 14px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
             font-weight: 600;
-            cursor: grab;
+            cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            -webkit-touch-callout: none;
+            touch-action: manipulation;
         }
 
         .item::before {
@@ -267,29 +284,24 @@
             transition: var(--transition);
         }
 
-        .item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .item:hover::before {
-            opacity: 1;
+        .item:active {
+            transform: scale(0.95);
         }
 
         .item-value {
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .item-weight {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0.9;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            margin-top: 0.2rem;
+            margin-top: 0.1rem;
         }
 
         .item.in-bag {
-            transform: scale(0.9);
+            transform: scale(0.85);
             cursor: pointer;
             position: relative;
         }
@@ -297,21 +309,22 @@
         .item.in-bag::after {
             content: '✕';
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -4px;
+            right: -4px;
             background: var(--danger);
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             opacity: 0;
             transition: var(--transition);
         }
 
-        .item.in-bag:hover::after {
+        .item.in-bag:hover::after,
+        .item.in-bag:active::after {
             opacity: 1;
         }
 
@@ -320,7 +333,7 @@
         }
 
         @keyframes removeItem {
-            0% { transform: scale(0.9); opacity: 1; }
+            0% { transform: scale(0.85); opacity: 1; }
             50% { transform: scale(1.1); opacity: 0.7; }
             100% { transform: scale(0); opacity: 0; }
         }
@@ -330,25 +343,26 @@
         }
 
         .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
             margin-top: 1rem;
-            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 1rem;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            gap: 0.4rem;
             box-shadow: var(--shadow);
+            touch-action: manipulation;
         }
 
         .btn-primary {
@@ -371,23 +385,18 @@
             color: white;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-        }
-
         .btn:active {
-            transform: translateY(0);
+            transform: scale(0.95);
         }
 
         .sidebar {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 2rem;
+            padding: 1.5rem;
             box-shadow: var(--shadow-lg);
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.2rem;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -395,29 +404,30 @@
         .card {
             background: white;
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.2rem;
             box-shadow: var(--shadow);
         }
 
         .card h3 {
             color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
         .progress-container {
-            margin: 1.5rem 0;
+            margin: 1rem 0;
         }
 
         .progress-label {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             font-weight: 600;
             color: var(--dark);
+            font-size: 0.9rem;
         }
 
         .progress-bar {
@@ -435,41 +445,43 @@
         }
 
         .instructions {
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 0.9rem;
         }
 
         .instructions ol {
-            margin-left: 1.2rem;
-            margin-top: 0.5rem;
+            margin-left: 1rem;
+            margin-top: 0.4rem;
         }
 
         .instructions li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .score-board {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 0.8rem;
             text-align: center;
         }
 
         .score-value {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
         }
 
         .score-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--gray);
         }
 
         .history-item {
             display: flex;
             justify-content: space-between;
-            padding: 0.5rem 0;
+            padding: 0.4rem 0;
             border-bottom: 1px solid #e2e8f0;
+            font-size: 0.85rem;
         }
 
         .history-item:last-child {
@@ -490,6 +502,7 @@
             opacity: 0;
             pointer-events: none;
             transition: var(--transition);
+            padding: 1rem;
         }
 
         .modal.active {
@@ -500,9 +513,9 @@
         .modal-content {
             background: white;
             border-radius: var(--border-radius);
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
+            padding: 1.5rem;
+            max-width: 400px;
+            width: 100%;
             text-align: center;
             box-shadow: var(--shadow-lg);
             transform: translateY(20px);
@@ -516,11 +529,13 @@
         .modal h2 {
             color: var(--primary-dark);
             margin-bottom: 1rem;
+            font-size: 1.5rem;
         }
 
         .modal p {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
         }
 
         .celebration {
@@ -535,10 +550,10 @@
 
         .confetti {
             position: absolute;
-            width: 10px;
-            height: 20px;
+            width: 8px;
+            height: 16px;
             background: var(--primary);
-            top: -20px;
+            top: -16px;
             animation: fall linear forwards;
         }
 
@@ -549,7 +564,7 @@
         }
 
         .trophy {
-            font-size: 4rem;
+            font-size: 3rem;
             color: var(--warning);
             margin-bottom: 1rem;
             animation: bounce 1s infinite alternate;
@@ -557,7 +572,7 @@
 
         @keyframes bounce {
             from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
+            to { transform: translateY(-8px); }
         }
 
         .item-1 { background: linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%); }
@@ -574,21 +589,22 @@
 
         .trash-zone {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 70px;
-            height: 70px;
+            bottom: 1rem;
+            right: 1rem;
+            width: 60px;
+            height: 60px;
             background: var(--danger);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             box-shadow: var(--shadow);
             z-index: 100;
             transition: var(--transition);
             opacity: 0.8;
+            touch-action: manipulation;
         }
 
         .trash-zone.drag-over {
@@ -616,67 +632,99 @@
             100% { transform: scale(1); }
         }
 
-        .timer {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .remove-instruction {
+        .mobile-instruction {
             text-align: center;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             color: var(--gray);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
-        @media (max-width: 768px) {
+        /* Desktop-specific styles */
+        @media (min-width: 768px) {
+            body {
+                padding: 2rem 1rem;
+            }
+            
+            .container {
+                gap: 2rem;
+            }
+            
             h1 {
-                font-size: 2.5rem;
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .game-container {
+                grid-template-columns: 1fr 350px;
+                gap: 2rem;
             }
             
             .game-area, .sidebar {
-                padding: 1.5rem;
+                padding: 2rem;
             }
             
-            .bag {
-                width: 260px;
-                height: 350px;
-            }
-            
-            .item {
-                width: 70px;
-                height: 70px;
-            }
-            
-            .controls {
-                flex-direction: column;
+            .level-info {
+                flex-direction: row;
+                justify-content: space-between;
                 align-items: center;
             }
             
-            .btn {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-            
             .stats {
-                flex-wrap: wrap;
-                justify-content: center;
+                display: flex;
+                gap: 1.5rem;
             }
             
-            .trash-zone {
-                bottom: 1rem;
-                right: 1rem;
-                width: 60px;
-                height: 60px;
-                font-size: 1.3rem;
+            .stat {
+                min-width: 100px;
+                padding: 0.8rem 1.2rem;
+            }
+            
+            .timer-container {
+                display: none;
+            }
+            
+            .bag {
+                width: 300px;
+                height: 400px;
+            }
+            
+            .item {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .controls {
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .mobile-instruction {
+                display: none;
+            }
+        }
+
+        /* Large screen adjustments */
+        @media (min-width: 1024px) {
+            .bag {
+                width: 320px;
+                height: 420px;
+            }
+            
+            .item {
+                width: 85px;
+                height: 85px;
             }
         }
     </style>
@@ -685,7 +733,7 @@
     <div class="container">
         <header>
             <h1>Knapsack Challenge</h1>
-            <p class="subtitle">Fill your bag with valuable items without exceeding the weight limit. Maximize your profit to advance to higher levels!</p>
+            <p class="subtitle">Fill your bag with valuable items without exceeding the weight limit!</p>
         </header>
 
         <div class="game-container">
@@ -708,11 +756,9 @@
                             <div class="stat-value" id="max-weight">10</div>
                             <div class="stat-label">Max Weight</div>
                         </div>
-                        <div class="stat">
-                            <div class="timer">
-                                <i class="fas fa-clock"></i>
-                                <span id="time">60</span>s
-                            </div>
+                        <div class="timer-container">
+                            <i class="fas fa-clock"></i>
+                            <span id="time">60</span>s
                         </div>
                     </div>
                 </div>
@@ -727,8 +773,8 @@
                         <i class="fas fa-weight-hanging"></i>
                         Weight: <span id="weight-indicator">0</span>/<span id="max-weight-indicator">10</span>
                     </div>
-                    <div class="remove-instruction">
-                        <i class="fas fa-info-circle"></i> Click items in bag to remove them
+                    <div class="mobile-instruction">
+                        <i class="fas fa-hand-pointer"></i> Tap items to add, tap in bag to remove
                     </div>
                 </div>
 
@@ -738,16 +784,16 @@
 
                 <div class="controls">
                     <button class="btn btn-primary" id="check-btn">
-                        <i class="fas fa-check-circle"></i> Check Solution
+                        <i class="fas fa-check-circle"></i> Check
                     </button>
                     <button class="btn btn-success" id="hint-btn">
-                        <i class="fas fa-lightbulb"></i> Get Hint
+                        <i class="fas fa-lightbulb"></i> Hint
                     </button>
                     <button class="btn btn-warning" id="reset-btn">
-                        <i class="fas fa-redo"></i> Reset Level
+                        <i class="fas fa-redo"></i> Reset
                     </button>
                     <button class="btn btn-danger" id="solution-btn">
-                        <i class="fas fa-eye"></i> Show Solution
+                        <i class="fas fa-eye"></i> Solution
                     </button>
                 </div>
             </div>
@@ -790,12 +836,11 @@
                     <h3><i class="fas fa-info-circle"></i> How to Play</h3>
                     <div class="instructions">
                         <ol>
-                            <li>Drag items into the bag to maximize value</li>
-                            <li>Don't exceed the weight limit shown</li>
-                            <li><strong>Items disappear from the list when in the bag</strong></li>
-                            <li>Click items in the bag to remove them</li>
-                            <li>Or drag items from the bag to the trash can</li>
-                            <li>Check your solution when ready</li>
+                            <li><strong>Mobile:</strong> Tap items to add to bag</li>
+                            <li><strong>Desktop:</strong> Drag items into the bag</li>
+                            <li>Don't exceed the weight limit</li>
+                            <li>Items disappear from list when in bag</li>
+                            <li>Tap items in bag to remove them</li>
                             <li>Complete levels to earn points</li>
                             <li>Use hints if you get stuck</li>
                         </ol>
@@ -862,7 +907,8 @@
             selectedItems: [],
             timeLeft: 60,
             timer: null,
-            isPaused: false
+            isPaused: false,
+            isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
         };
 
         // DOM elements
@@ -916,7 +962,7 @@
             gameState.currentWeight = 0;
             
             // Adjust difficulty based on level
-            const itemCount = Math.min(6 + Math.floor(gameState.level / 2), 12);
+            const itemCount = Math.min(6 + Math.floor(gameState.level / 2), 10);
             gameState.maxWeight = 10 + Math.floor(gameState.level * 1.5);
             gameState.timeLeft = 60 + Math.floor(gameState.level * 5);
             
@@ -950,16 +996,22 @@
             gameState.items.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.className = `item item-${(item.id % 6) + 1}`;
-                itemElement.setAttribute('draggable', 'true');
                 itemElement.setAttribute('data-id', item.id);
                 itemElement.innerHTML = `
                     <div class="item-value">$${item.value}</div>
                     <div class="item-weight">${item.weight}kg</div>
                 `;
                 
-                // Add drag event listeners
-                itemElement.addEventListener('dragstart', handleDragStart);
-                itemElement.addEventListener('dragend', handleDragEnd);
+                // Add event listeners based on device type
+                if (gameState.isMobile) {
+                    // Mobile: tap to add
+                    itemElement.addEventListener('click', () => handleItemTap(item));
+                } else {
+                    // Desktop: drag and drop
+                    itemElement.setAttribute('draggable', 'true');
+                    itemElement.addEventListener('dragstart', handleDragStart);
+                    itemElement.addEventListener('dragend', handleDragEnd);
+                }
                 
                 elements.itemsContainer.appendChild(itemElement);
                 item.element = itemElement;
@@ -972,19 +1024,27 @@
             });
         }
 
+        // Handle item tap on mobile
+        function handleItemTap(item) {
+            if (!item.inBag && gameState.currentWeight + item.weight <= gameState.maxWeight) {
+                addItemToBag(item);
+            }
+        }
+
         // Setup event listeners
         function setupEventListeners() {
-            // Bag events
-            elements.bag.addEventListener('dragover', handleDragOver);
-            elements.bag.addEventListener('dragenter', handleDragEnter);
-            elements.bag.addEventListener('dragleave', handleDragLeave);
-            elements.bag.addEventListener('drop', handleDrop);
-            
-            // Trash zone events
-            elements.trashZone.addEventListener('dragover', handleTrashDragOver);
-            elements.trashZone.addEventListener('dragenter', handleTrashDragEnter);
-            elements.trashZone.addEventListener('dragleave', handleTrashDragLeave);
-            elements.trashZone.addEventListener('drop', handleTrashDrop);
+            if (!gameState.isMobile) {
+                // Desktop: drag and drop events
+                elements.bag.addEventListener('dragover', handleDragOver);
+                elements.bag.addEventListener('dragenter', handleDragEnter);
+                elements.bag.addEventListener('dragleave', handleDragLeave);
+                elements.bag.addEventListener('drop', handleDrop);
+                
+                elements.trashZone.addEventListener('dragover', handleTrashDragOver);
+                elements.trashZone.addEventListener('dragenter', handleTrashDragEnter);
+                elements.trashZone.addEventListener('dragleave', handleTrashDragLeave);
+                elements.trashZone.addEventListener('drop', handleTrashDrop);
+            }
             
             // Button events
             elements.checkBtn.addEventListener('click', checkSolution);
@@ -997,11 +1057,13 @@
                 elements.solutionModal.classList.remove('active');
             });
             
-            // Keyboard shortcuts
-            document.addEventListener('keydown', handleKeyPress);
+            // Keyboard shortcuts (desktop only)
+            if (!gameState.isMobile) {
+                document.addEventListener('keydown', handleKeyPress);
+            }
         }
 
-        // Drag and drop handlers
+        // Drag and drop handlers (desktop only)
         function handleDragStart(e) {
             e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
             e.dataTransfer.setData('source', 'items-container');
@@ -1051,7 +1113,7 @@
             }
         }
 
-        // Trash zone handlers
+        // Trash zone handlers (desktop only)
         function handleTrashDragOver(e) {
             e.preventDefault();
         }
@@ -1092,24 +1154,26 @@
             const itemCopy = item.element.cloneNode(true);
             itemCopy.classList.add('in-bag');
             itemCopy.classList.remove('hidden');
-            itemCopy.setAttribute('draggable', 'true');
             itemCopy.setAttribute('data-id', item.id);
             
-            // Add click event to remove item
+            // Add click event to remove item (both mobile and desktop)
             itemCopy.addEventListener('click', () => removeItemFromBag(item));
             
-            // Add drag events for removing from bag
-            itemCopy.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
-                e.dataTransfer.setData('source', 'bag-items');
-                setTimeout(() => {
-                    e.target.style.opacity = '0.5';
-                }, 0);
-            });
-            
-            itemCopy.addEventListener('dragend', (e) => {
-                e.target.style.opacity = '1';
-            });
+            // Add drag events for desktop
+            if (!gameState.isMobile) {
+                itemCopy.setAttribute('draggable', 'true');
+                itemCopy.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
+                    e.dataTransfer.setData('source', 'bag-items');
+                    setTimeout(() => {
+                        e.target.style.opacity = '0.5';
+                    }, 0);
+                });
+                
+                itemCopy.addEventListener('dragend', (e) => {
+                    e.target.style.opacity = '1';
+                });
+            }
             
             elements.bagItems.appendChild(itemCopy);
             
@@ -1344,7 +1408,7 @@
             }, 1000);
         }
 
-        // Handle keyboard shortcuts
+        // Handle keyboard shortcuts (desktop only)
         function handleKeyPress(e) {
             if (e.key === 'r' || e.key === 'R') {
                 resetLevel();
@@ -1366,7 +1430,7 @@
             elements.celebration.innerHTML = '';
             const colors = ['#3b82f6', '#1d4ed8', '#ec4899', '#10b981', '#f59e0b', '#ef4444'];
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 80; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = `${Math.random() * 100}%`;
